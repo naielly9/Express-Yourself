@@ -1,0 +1,136 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Mini Blog API",
+    "version": "1.0.0",
+    "description": "API para gerenciar usuários e posts no Mini Blog"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Servidor local"
+    }
+  ],
+  "paths": {
+    "/register": {
+      "post": {
+        "summary": "Cadastrar um novo usuário",
+        "description": "Rota para registrar um usuário com nome de usuário e senha.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": { "type": "string" },
+                  "password": { "type": "string" }
+                },
+                "required": ["username", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Usuário criado com sucesso."
+          },
+          "400": {
+            "description": "Erro ao criar o usuário."
+          }
+        }
+      }
+    },
+    "/change-password": {
+      "put": {
+        "summary": "Alterar senha do usuário",
+        "description": "Rota para alterar a senha de um usuário.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": { "type": "string" },
+                  "oldPassword": { "type": "string" },
+                  "newPassword": { "type": "string" }
+                },
+                "required": ["username", "oldPassword", "newPassword"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Senha alterada com sucesso."
+          },
+          "404": {
+            "description": "Usuário não encontrado."
+          },
+          "401": {
+            "description": "Senha antiga incorreta."
+          }
+        }
+      }
+    },
+    "/posts": {
+      "post": {
+        "summary": "Criar um post",
+        "description": "Rota para criar um novo post para um usuário.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userId": { "type": "integer" },
+                  "title": { "type": "string" },
+                  "content": { "type": "string" }
+                },
+                "required": ["userId", "title", "content"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Post criado com sucesso."
+          },
+          "400": {
+            "description": "Erro ao criar o post."
+          }
+        }
+      },
+      "get": {
+        "summary": "Recuperar posts",
+        "description": "Rota para recuperar todos os posts disponíveis.",
+        "responses": {
+          "200": {
+            "description": "Lista de posts.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": { "type": "integer" },
+                      "userId": { "type": "integer" },
+                      "title": { "type": "string" },
+                      "content": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao recuperar os posts."
+          }
+        }
+      }
+    }
+  }
+}
